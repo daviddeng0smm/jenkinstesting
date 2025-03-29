@@ -11,21 +11,19 @@ pipeline{
                     sh 'grep "Initial Data" data.txt'
                 }
             }
-            stage('Processing Stage'){
-                steps{
-                    '''
-                        cd project_dir
-                        echo "Processed Data" >> data.txt
-                    '''
-                    script{
-                            lineCount = sh(
-                            script: 'wc -l < project_dir/data.txt',
-                            returnStdout: true
-                            ).trim()
-                    }
-                    sh 'echo lineCount'
+        stage('Processing Stage') {
+            steps {
+                sh '''
+                    echo "Processed Data" >> project_dir/data.txt
+                '''
+                script {
+                    def lineCount = sh(
+                        script: 'wc -l < project_dir/data.txt',
+                        returnStdout: true
+                    ).trim()
+                    echo "Line count: ${lineCount}"
                 }
             }
-            
         }
     }
+}
