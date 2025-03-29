@@ -1,16 +1,20 @@
-pipeline{
+pipeline {
     agent any
-        stages{
-            stage('Set Up'){
-                steps{
-                    clearws()
-                    sh 'mkdir -p project_dir'
-                    sh 'cd project_dir'
-                    sh 'touch data.txt'
-                    sh 'echo "Initial Data" >> data.txt'
-                    sh 'grep "Initial Data" data.txt'
-                }
+
+    stages {
+        stage('Set Up') {
+            steps {
+                cleanWs() // Correct method name
+                sh '''
+                    mkdir -p project_dir
+                    cd project_dir
+                    touch data.txt
+                    echo "Initial Data" >> data.txt
+                    grep "Initial Data" data.txt
+                '''
             }
+        }
+
         stage('Processing Stage') {
             steps {
                 sh '''
