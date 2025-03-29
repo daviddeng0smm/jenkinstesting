@@ -1,0 +1,31 @@
+pipeline{
+    agent any
+        stages{
+            stage('Set Up'){
+                steps{
+                    clearws()
+                    sh 'mkdir -p project_dir'
+                    sh 'cd project_dir'
+                    sh 'touch data.txt'
+                    sh 'echo "Initial Data" >> data.txt'
+                    sh 'grep "Initial Data" data.txt'
+                }
+            }
+            stage('Processing Stage'){
+                steps{
+                    '''
+                        cd project_dir
+                        echo "Processed Data" >> data.txt
+                    '''
+                    script{
+                            lineCount = sh(
+                            script: 'wc -l < project_dir/data.txt',
+                            returnStdout: true
+                            ).trim()
+                    }
+                    sh 'echo lineCount'
+                }
+            }
+            
+        }
+    }
